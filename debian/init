@@ -1,0 +1,85 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:             webhooks
+# Required-Start:       $remote_fs
+# Required-Stop:        $remote_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1
+# Short-Description:    Webhooks worker
+### END INIT INFO
+
+set -e
+
+. /lib/lsb/init-functions
+
+DEFAULTS_FILE=/etc/default/webhooks
+
+export PATH="$PATH:/sbin/:/usr/sbin/:$TOOLS_PATH"
+
+if [ -s $DEFAULTS_FILE ]; then
+    . $DEFAULTS_FILE
+fi
+
+do_start() {
+    HOST_ARG=
+    PORT_ARG=
+    DEBUG_ARG=
+
+    if [ "x$ENABLE" != "xtrue" ]; then
+	return 0
+    fi
+
+    if [ -n "$HOST" ]; then
+	HOST_ARG="--host $HOST"
+    fi
+
+    if [ -n "$PORT" ]; then
+	PORT_ARG="--port $PORT"
+    fi
+
+    if [ "x$DEBUG" != "xtrue" ]; then
+	DEBUG_ARG="--debug"
+    fi
+
+    log_daemon_msg "Starting webhooks server" "webhooks"
+    /usr/bin/daemon -n webhooks \
+	-u $USER:$GROUP \
+	-o $LOG \
+	-r -- /usr/bin/webhooks $HOST_ARG $PORT_ARG $DEBUG_ARG
+
+    ret=$?
+    log_end_msg $ret
+}
+
+do_stop() {
+    if [ "x$ENABLE" != "xtrue" ]; then
+	return 0
+    fi
+
+    log_daemon_msg "Stopping webhooks server" "webhooks"
+
+    /usr/bin/daemon --stop -n webhooks
+
+    ret=$?
+    log_end_msg $ret
+}
+
+case "$1" in
+    start)
+	do_start
+	;;
+    stop)
+	do_stop
+	;;
+    restart)
+	do_stop || true
+	do_start
+	;;
+    *)
+	echo "Only start, stop and restart are supported"
+	exit 3
+	;;
+esac
+
+exit 0

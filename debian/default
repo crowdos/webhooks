@@ -1,0 +1,7 @@
+ENABLE=false
+HOST=localhost
+PORT=80
+DEBUG=false
+LOG=daemon.info
+USER=nobody
+GROUP=nobody
