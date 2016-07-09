@@ -1,0 +1,11 @@
+--- a/python-github-webhooks/webhooks.py
++++ b/python-github-webhooks/webhooks.py
+@@ -49,7 +49,7 @@
+         abort(501)
+ 
+     # Load config
+-    with open(join(path, 'config.json'), 'r') as cfg:
++    with open(join("/etc/webhooks/", 'config.json'), 'r') as cfg:
+         config = loads(cfg.read())
+ 
+     # Allow Github IPs only
