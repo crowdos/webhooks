@@ -9,7 +9,7 @@
  logging.basicConfig(stream=stderr)
  
  import hmac
-@@ -193,4 +193,23 @@
+@@ -194,4 +194,23 @@
  
  
  if __name__ == '__main__':

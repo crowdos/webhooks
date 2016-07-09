@@ -1,0 +1,7 @@
+--- a/python-github-webhooks/webhooks.py
++++ b/python-github-webhooks/webhooks.py
+@@ -1,3 +1,4 @@
++#!/usr/bin/python
+ # -*- coding: utf-8 -*-
+ #
+ # Copyright (C) 2014, 2015, 2016 Carlos Jenkins <carlos@jenkins.co.cr>

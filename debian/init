@@ -59,7 +59,7 @@ do_stop() {
 
     log_daemon_msg "Stopping webhooks server" "webhooks"
 
-    /usr/bin/daemon --stop -n webhooks
+    /usr/bin/daemon --stop -u $USER:$GROUP -n webhooks
 
     ret=$?
     log_end_msg $ret
