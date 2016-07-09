@@ -1,0 +1,10 @@
+--- a/python-github-webhooks/webhooks.py
++++ b/python-github-webhooks/webhooks.py
+@@ -43,6 +43,7 @@
+ 
+     path = normpath(abspath(dirname(__file__)))
+     hooks = join(path, 'hooks')
++    hooks = "/usr/libexec/webhooks/"
+ 
+     # Only POST is implemented
+     if request.method != 'POST':

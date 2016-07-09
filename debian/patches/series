@@ -1,1 +1,2 @@
 read_config_from_etc.patch
+hooks_path.patch
