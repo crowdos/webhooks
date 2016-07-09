@@ -1,0 +1,36 @@
+--- a/python-github-webhooks/webhooks.py
++++ b/python-github-webhooks/webhooks.py
+@@ -16,7 +16,7 @@
+ # under the License.
+ 
+ import logging
+-from sys import stderr, hexversion
++from sys import stderr, hexversion, argv
+ logging.basicConfig(stream=stderr)
+ 
+ import hmac
+@@ -193,4 +193,23 @@
+ 
+ 
+ if __name__ == '__main__':
+-    application.run(debug=True, host='0.0.0.0')
++    app_debug = False
++    app_host = '0.0.0.0'
++    app_port = 80
++
++    if '--debug' in argv:
++        app_debug = True
++
++    try:
++        i = argv.index('--host')
++        app_host = argv[i+1]
++    except:
++        pass
++
++    try:
++        i = argv.index('--port')
++        app_port = int(argv[i+1])
++    except:
++        pass
++
++    application.run(debug=app_debug, host=app_host, port=app_port)
