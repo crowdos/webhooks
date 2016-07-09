@@ -1,0 +1,18 @@
+Source: webhooks
+Section: web
+Priority: optional
+Maintainer: Mohammed Sameer <msameer@foolab.org>
+Build-Depends: debhelper (>= 9), quilt
+Build-Depends-Indep: python
+Standards-Version: 3.9.6
+
+Package: webhooks
+Architecture: all
+Section: utils
+Depends: ${misc:Depends},
+	 python,
+	 python-flask,
+	 python-ipaddress,
+	 python-requests
+Description: webhooks server
+ This package provides the webhooks server

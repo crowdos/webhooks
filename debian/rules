@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@ --with quilt
+
+override_dh_install:
+	mkdir -p debian/tmp/usr/bin/
+	mkdir -p debian/tmp/etc/webhooks/
+	mkdir -p debian/tmp/usr/libexec/webhooks/
+	cp python-github-webhooks/webhooks.py debian/tmp/usr/bin/webhooks
+	chmod +x debian/tmp/usr/bin/webhooks
+	cp python-github-webhooks/config.json debian/tmp/etc/webhooks/
+	dh_install --fail-missing

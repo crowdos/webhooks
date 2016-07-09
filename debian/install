@@ -1,0 +1,3 @@
+etc/webhooks/config.json
+usr/libexec/webhooks/
+usr/bin/webhooks
