@@ -6,17 +6,14 @@ import json
 sys.path.append("flask-admin")
 
 import time
-
-from flask import Flask, flash
-from flask_admin import Admin, AdminIndexView, expose
-from flask_admin.actions import action
-from flask_admin.contrib.sqla import ModelView
-from flask.ext.sqlalchemy import SQLAlchemy
+import flask
+import flask_admin
+import flask_admin.contrib.sqla
+import flask.ext.sqlalchemy
 from sqlalchemy.dialects import mysql
-from flask_admin.form import SecureForm
 
-app = Flask(__name__)
-db = SQLAlchemy()
+app = flask.Flask(__name__)
+db = flask.ext.sqlalchemy.SQLAlchemy()
 
 class Repo(db.Model):
     id = db.Column(mysql.INTEGER(10, unsigned=True), primary_key=True, autoincrement=True)
@@ -77,8 +74,8 @@ class HookData(db.Model):
     def update_timestamp(self):
         self.timestamp = int(time.time())
 
-class View(ModelView):
-    form_base_class = SecureForm
+class View(flask_admin.contrib.sqla.ModelView):
+    form_base_class = flask_admin.form.SecureForm
     column_display_pk = True
     column_hide_backrefs = False
     column_labels = dict(url='URL', id='ID',
@@ -109,7 +106,7 @@ class HookDataView(View):
     # We use a lambda so we can return the current epoch at the time of form generation
     form_args = dict(timestamp=dict(default=lambda: int(time.time())))
 
-    @action('trigger', 'Trigger', 'Trigger hook?')
+    @flask_admin.actions.action('trigger', 'Trigger', 'Trigger hook?')
     def action_trigger(self, ids):
         for id in ids:
             d = self.get_one(id)
@@ -117,9 +114,9 @@ class HookDataView(View):
             s = str(d)
             # TODO: implement me
             if False:
-                flash('Successfully triggered %s.' % (s), 'success')
+                flask.flash('Successfully triggered %s.' % (s), 'success')
             else:
-                flash('Failed to trigger %s.' % (s), 'error')
+                flask.flash('Failed to trigger %s.' % (s), 'error')
 
         self.session.commit()
 
@@ -186,8 +183,8 @@ if __name__ == '__main__':
                                       conf['mysql']['host'], conf['mysql']['database'])
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
-    admin = Admin(app, template_mode='bootstrap3')
-#                  index_view=IndexView())
+    admin = flask_admin.Admin(app, template_mode='bootstrap3')
+
     db.init_app(app)
 
     admin.add_view(View(Repo, db.session))
