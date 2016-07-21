@@ -181,9 +181,9 @@ if __name__ == '__main__':
     app.debug = debug
     app.config['SQLALCHEMY_ECHO'] = echo
 
-    app.config['SECRET_KEY'] = conf['secret_key']
-    db_uri = 'mysql://%s:%s@%s/%s' % (conf['db_user'], conf['db_pass'],
-                                      conf['db_host'], conf['db_db'])
+    app.config['SECRET_KEY'] = conf['app']['secret_key']
+    db_uri = 'mysql://%s:%s@%s/%s' % (conf['mysql']['username'], conf['mysql']['password'],
+                                      conf['mysql']['host'], conf['mysql']['database'])
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
     admin = Admin(app, template_mode='bootstrap3')
