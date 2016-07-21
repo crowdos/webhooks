@@ -91,6 +91,7 @@ class HookView(View):
                              tag=lambda v, c, m, p: m.data.tag)
 
 class HookDataView(View):
+    column_default_sort = ('timestamp', True)
     column_list = ['id', 'timestamp', 'tag', 'sha1', 'repo', 'project', 'package']
     column_formatters = dict(timestamp=lambda v, c, m, p: time.ctime(m.timestamp),
                              repo=lambda v, c, m, p: m.hook_r.repo_r.url,
