@@ -55,8 +55,6 @@ class Hook(db.Model):
     repo_r = db.relationship('Repo', foreign_keys=repo, lazy='select', uselist=False)
     __table_args__ = (db.UniqueConstraint('project', 'package', 'branch', 'repo',
                                           name='table_index'), )
-    # data:
-    data = db.relationship('HookData', lazy='select', uselist=False)
 
     def __repr__(self):
         return '%s [%s] %s %s' % (self.repo_r.url, self.branch, self.project_r.name, self.package_r.name)
@@ -69,7 +67,8 @@ class HookData(db.Model):
     hook = db.Column(mysql.INTEGER(10, unsigned=True),
                      db.ForeignKey('hook.id', onupdate='CASCADE', ondelete='RESTRICT'),
                      nullable=False, unique=False)
-    hook_r = db.relationship('Hook', foreign_keys=hook, lazy='select', uselist=False)
+    hook_r = db.relationship('Hook', foreign_keys=hook,
+                             backref=db.backref('data', lazy='select', uselist=False))
 
 class View(ModelView):
     form_base_class = SecureForm
