@@ -7,8 +7,9 @@ sys.path.append("flask-admin")
 
 import time
 
-from flask import Flask
+from flask import Flask, flash
 from flask_admin import Admin, AdminIndexView, expose
+from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects import mysql
@@ -73,6 +74,9 @@ class HookData(db.Model):
     def __repr__(self):
         return '%s [%s] %s' % (self.sha1, self.tag, time.asctime(time.gmtime(self.timestamp)))
 
+    def update_timestamp(self):
+        self.timestamp = int(time.time())
+
 class View(ModelView):
     form_base_class = SecureForm
     column_display_pk = True
@@ -104,6 +108,20 @@ class HookDataView(View):
 
     # We use a lambda so we can return the current epoch at the time of form generation
     form_args = dict(timestamp=dict(default=lambda: int(time.time())))
+
+    @action('trigger', 'Trigger', 'Trigger hook?')
+    def action_trigger(self, ids):
+        for id in ids:
+            d = self.get_one(id)
+            d.update_timestamp()
+            s = str(d)
+            # TODO: implement me
+            if False:
+                flash('Successfully triggered %s.' % (s), 'success')
+            else:
+                flash('Failed to trigger %s.' % (s), 'error')
+
+        self.session.commit()
 
 # class IndexView(AdminIndexView):
 #     column_descriptions = dict()
