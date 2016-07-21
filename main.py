@@ -70,6 +70,9 @@ class HookData(db.Model):
     hook_r = db.relationship('Hook', foreign_keys=hook,
                              backref=db.backref('data', lazy='select', uselist=False))
 
+    def __repr__(self):
+        return '%s [%s] %s' % (self.sha1, self.tag, time.asctime(time.gmtime(self.timestamp)))
+
 class View(ModelView):
     form_base_class = SecureForm
     column_display_pk = True
