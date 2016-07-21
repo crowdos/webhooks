@@ -1,0 +1,7 @@
+{
+    "secret_key": "123456790",
+    "db_user": "root",
+    "db_pass": "",
+    "db_host": "localhost",
+    "db_db": ""
+}
