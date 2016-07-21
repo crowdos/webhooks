@@ -66,7 +66,7 @@ class HookData(db.Model):
     sha1 = db.Column(db.String(255), nullable=False)
     hook = db.Column(mysql.INTEGER(10, unsigned=True),
                      db.ForeignKey('hook.id', onupdate='CASCADE', ondelete='RESTRICT'),
-                     nullable=False, unique=False)
+                     nullable=False, unique=True)
     hook_r = db.relationship('Hook', foreign_keys=hook,
                              backref=db.backref('data', lazy='select', uselist=False))
 
