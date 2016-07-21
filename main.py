@@ -50,9 +50,9 @@ class Hook(db.Model):
     repo = db.Column(mysql.INTEGER(10, unsigned=True),
                         db.ForeignKey('repo.id', onupdate='CASCADE', ondelete='RESTRICT'),
                         nullable=False)
-    project_r = db.relationship('Project', lazy='select', uselist=False)
-    package_r = db.relationship('Package', lazy='select', uselist=False)
-    repo_r = db.relationship('Repo', lazy='select', uselist=False)
+    project_r = db.relationship('Project', foreign_keys=project, lazy='select', uselist=False)
+    package_r = db.relationship('Package', foreign_keys=package, lazy='select', uselist=False)
+    repo_r = db.relationship('Repo', foreign_keys=repo, lazy='select', uselist=False)
     __table_args__ = (db.UniqueConstraint('project', 'package', 'branch', 'repo',
                                           name='table_index'), )
     # data:
@@ -69,7 +69,7 @@ class HookData(db.Model):
     hook = db.Column(mysql.INTEGER(10, unsigned=True),
                      db.ForeignKey('hook.id', onupdate='CASCADE', ondelete='RESTRICT'),
                      nullable=False, unique=False)
-    hook_r = db.relationship('Hook', lazy='select', uselist=False)
+    hook_r = db.relationship('Hook', foreign_keys=hook, lazy='select', uselist=False)
 
 class View(ModelView):
     form_base_class = SecureForm
