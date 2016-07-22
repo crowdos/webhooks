@@ -7,8 +7,8 @@ import flask.ext.sqlalchemy
 
 db = flask.ext.sqlalchemy.SQLAlchemy()
 
-import app.models
-import app.views
+import admin.models
+import admin.views
 
 class App:
     def __init__(self, conf, host='localhost', port=5000, debug=False, echo=False):

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import app
+import admin
 import json
 
 def find_arg(name, default):
@@ -33,9 +33,9 @@ def main():
 
     conf = json.load(open(conf))
 
-    admin_app = app.App(conf, host=host, port=port, debug=debug, echo=echo)
-    admin_app.add_views()
-    admin_app.run()
+    app = admin.App(conf, host=host, port=port, debug=debug, echo=echo)
+    app.add_views()
+    app.run()
 
 if __name__ == '__main__':
     main()
