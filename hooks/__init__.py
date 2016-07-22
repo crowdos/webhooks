@@ -6,16 +6,10 @@ import flask
 import json
 import ipaddress
 import requests
-from admin import db
+import common
 
-class App:
-    def __init__(self, conf, host='localhost', port=5000, debug=False):
-        self.conf = conf
-        self.app = flask.Flask(__name__)
-        self.app.debug = debug
-        self.host = host
-        self.port = port
-
+class App(common.CommonApp):
+    def init(self):
         self.app.add_url_rule('/', 'index', self.index, methods=['POST'])
 
     def index(self):

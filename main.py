@@ -5,6 +5,7 @@ import sys
 import admin
 import hooks
 import json
+import common
 
 def find_arg(name, default):
     try:
@@ -34,15 +35,17 @@ def main():
 
     conf = json.load(open(conf))
 
+    call = None
     if '--admin' in sys.argv:
-        app = admin.App(conf, host=host, port=port, debug=debug, echo=echo)
-        app.add_views()
-        app.run()
+        call = admin.App
     elif '--hooks' in sys.argv:
-        app = hooks.App(conf, host=host, port=port, debug=debug)
-        app.run()
+        call = hooks.App
     else:
         sys.exit('An app must be chosen via --admin or --hooks')
+
+    app = call(conf, host=host, port=port, debug=debug, echo=echo)
+    app.init()
+    app.run()
 
 if __name__ == '__main__':
     main()
