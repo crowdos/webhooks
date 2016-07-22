@@ -2,10 +2,21 @@
     "app": {
 	"secret_key": "123456790"
     },
+    "obs": {
+        "host": "",
+        "username": "",
+        "password": "",
+        "verify_ssl": false
+    },
     "mysql": {
-	"username": "root",
+	"username": "",
 	"password": "",
-	"host": "localhost",
-	"database": "webhooks"
+	"host": "",
+	"database": ""
+    },
+    "github": {
+	"github_ips_only": true,
+	"enforce_secret": "",
+	"return_scripts_info": true
     }
 }
