@@ -20,7 +20,24 @@ class Client:
                                verify=self.conf['obs']['verify_ssl'])
 
 class Project:
-    pass
+    def __init__(self, client, name=None):
+        self.client = client
+        self.name = name
+
+    def ensure(self):
+        if not self.exists():
+            self.create()
+        return self.exists()
+
+    def exists(self):
+        r = self.client.request(['source', self.name, '_meta'])
+        return r.status_code == 200
+
+    def create(self):
+        data = obs.templates.NEW_PROJECT_TEMPLATE
+        data = data.replace('@NAME@', self.name)
+        r = self.client.request(['source', self.project, '_meta'], data)
+        return self.exists()
 
 class Package:
     def __init__(self, client, name=None, project=None):
