@@ -4,6 +4,7 @@
 import time
 import flask
 import flask_admin.contrib.sqla
+import obs
 
 class View(flask_admin.contrib.sqla.ModelView):
     form_base_class = flask_admin.form.SecureForm
@@ -40,13 +41,16 @@ class HookDataView(View):
     @flask_admin.actions.action('trigger', 'Trigger', 'Trigger hook?')
     def action_trigger(self, ids):
         for id in ids:
-            d = self.get_one(id)
-            d.update_timestamp()
-            s = str(d)
-            # TODO: implement me
-            if False:
-                flask.flash('Successfully triggered %s.' % (s), 'success')
+            hook_data = self.get_one(id)
+            hook = hook_data.hook_r
+            s = str(hook_data)
+            client = obs.Client(View.conf)
+            package = obs.Package(client, name=hook.package_r.name, project=hook.project_r.name)
+            if not package.ensure():
+                flask.flash('Failed to create package for %s.' % (s), 'error')
+            elif not package.update_service(url=hook.repo_r.url, branch=hook.branch, revision=hook_data.tag):
+                flask.flash('Failed to trigger service for %s.' % (s), 'error')
             else:
-                flask.flash('Failed to trigger %s.' % (s), 'error')
-
-        self.session.commit()
+                flask.flash('Successfully triggered %s.' % (s), 'success')
+                hook_data.update_timestamp()
+                self.session.commit()
