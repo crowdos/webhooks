@@ -17,7 +17,7 @@ def __verify_remote_address(conf, request):
     if not conf['github']['github_ips_only']:
         return True
 
-    remote_addr = ipaddress.ip_address(request.remote_addr)
+    remote_addr = ipaddress.ip_address(request.remote_addr.decode())
     r = requests.get('https://api.github.com/meta')
 
     try:
@@ -42,10 +42,9 @@ def __verify_signature(conf, request):
         return False
 
     header = header[5:]
+    mac = hmac.new(key.encode('utf8'), request.data, hashlib.sha1)
 
-    mac = hmac.new(key.encode('utf-8'), request.data, hashlib.sha1)
-
-    return hmac.compare_digest(mac.hexdigest(), header)
+    return hmac.compare_digest(mac.hexdigest(), header.encode('utf-8'))
 
 def process(conf, request):
     if not __verify_remote_address(conf, request):
