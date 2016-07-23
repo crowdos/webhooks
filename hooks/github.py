@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import hmac
+import hashlib
 import json
 import ipaddress
 import requests
@@ -27,11 +29,31 @@ def __verify_remote_address(conf, request):
 
     return False
 
+def __verify_signature(conf, request):
+    key = conf['github']['enforce_secret']
+    if not key:
+        return True
+
+    header = request.headers.get('X-Hub-Signature')
+    if not header:
+        return False
+
+    if not header.startswith('sha1='):
+        return False
+
+    header = header[5:]
+
+    mac = hmac.new(key.encode('utf-8'), request.data, hashlib.sha1)
+
+    return hmac.compare_digest(mac.hexdigest(), header)
+
 def process(conf, request):
     if not __verify_remote_address(conf, request):
         flask.abort(403)
 
-    # TODO: verify secret
+    # Verify HMAC signature
+    if not __verify_signature(conf, request):
+        flask.abort(403)
 
     # support ping:
     if request.headers.get('X-GitHub-Event') == 'ping':
