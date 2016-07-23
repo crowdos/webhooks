@@ -1,0 +1,20 @@
+Source: webhooks
+Section: web
+Priority: optional
+Maintainer: Mohammed Sameer <msameer@foolab.org>
+Build-Depends: debhelper (>= 9),
+	       python-setuptools,
+	       python2.7,
+	       dh-python
+Standards-Version: 3.9.6
+
+Package: python-webhooks
+Architecture: all
+Section: utils
+Depends: ${misc:Depends},
+	 python-ipaddress,
+	 python-requests,
+	 python-flask-sqlalchemy,
+	 python-flask-admin
+Description: webhooks application
+ This package provides the webhooks application.
