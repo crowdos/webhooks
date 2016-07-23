@@ -3,7 +3,7 @@
 
 import time
 from sqlalchemy.dialects import mysql
-from common import db
+from webhooks.common import db
 
 class Repo(db.Model):
     id = db.Column(mysql.INTEGER(10, unsigned=True), primary_key=True, autoincrement=True)

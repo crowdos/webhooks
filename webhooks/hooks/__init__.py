@@ -3,8 +3,8 @@
 
 import sys
 import flask
-import common
-import hooks.github
+from webhooks import common
+import github
 
 class App(common.CommonApp):
     def init(self):

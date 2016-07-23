@@ -4,7 +4,7 @@
 import time
 import flask
 import flask_admin.contrib.sqla
-import obs
+from webhooks import obs
 
 class View(flask_admin.contrib.sqla.ModelView):
     form_base_class = flask_admin.form.SecureForm

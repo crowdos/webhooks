@@ -3,9 +3,8 @@
 
 import flask
 import flask_admin
-import common
-import admin.models
-import admin.views
+from webhooks import common
+import views
 import werkzeug
 import pam
 

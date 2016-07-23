@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
-import obs.templates
+import templates
 
 class Client:
     def __init__(self, conf):
@@ -34,7 +34,7 @@ class Project:
         return r.status_code == 200
 
     def create(self):
-        data = obs.templates.NEW_PROJECT_TEMPLATE
+        data = templates.NEW_PROJECT_TEMPLATE
         data = data.replace('@NAME@', self.name)
         r = self.client.request(['source', self.project, '_meta'], data)
         return self.exists()
@@ -55,13 +55,13 @@ class Package:
         return r.status_code == 200
 
     def create(self):
-        data = obs.templates.NEW_PACKAGE_TEMPLATE
+        data = templates.NEW_PACKAGE_TEMPLATE
         data = data.replace('@PACKAGE@', self.name).replace('@PROJECT@', self.project)
         r = self.client.request(['source', self.project, self.name, '_meta'], data)
         return self.exists()
 
     def update_service(self, url=None, branch=None, revision=None):
-        data=obs.templates.SERVICE_TEMPLATE
+        data = templates.SERVICE_TEMPLATE
         data = data.replace('@URL@', url).replace('@BRANCH@', branch).replace('@REVISION@', revision)
         r = self.client.request(['source', self.project, self.name, '_service'], data)
         return r.status_code == 200

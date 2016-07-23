@@ -7,9 +7,9 @@ import json
 import ipaddress
 import requests
 import flask
-from common import db
-import admin.models
-import obs
+from webhooks.common import db
+import webhooks.admin.models
+from webhooks import obs
 
 __all__ = ['process']
 
@@ -75,12 +75,12 @@ def process(conf, request):
     repo = parser.repo()
 
     # Now we need to find the hook:
-    repo = admin.models.Repo.query.filter_by(url=repo).all()
+    repo = webhooks.admin.models.Repo.query.filter_by(url=repo).all()
     if not repo:
         return 'No repository found'
     repo = repo[0]
 
-    hooks = admin.models.Hook.query.filter_by(repo=repo.id, branch=branch).all()
+    hooks = webhooks.admin.models.Hook.query.filter_by(repo=repo.id, branch=branch).all()
     if not hooks:
         return 'No configured hook'
 
@@ -89,7 +89,7 @@ def process(conf, request):
 
     for hook in hooks:
         if not hook.data:
-            hook.data = admin.models.HookData()
+            hook.data = webhooks.admin.models.HookData()
         hook.data.update_timestamp()
         hook.data.tag = tag
         hook.data.sha1 = parser.sha1()

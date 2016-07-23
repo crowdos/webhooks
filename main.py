@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import admin
-import hooks
 import json
-import common
+from webhooks import admin, hooks, common
 
 def find_arg(name, default):
     try:
