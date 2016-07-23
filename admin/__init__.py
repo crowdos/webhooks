@@ -6,9 +6,13 @@ import flask_admin
 import common
 import admin.models
 import admin.views
+import werkzeug
+import pam
 
 class App(common.CommonApp):
     def init(self):
+        self.app.before_request(self.authenticate)
+
         self.admin = flask_admin.Admin(self.app, template_mode='bootstrap3')
 
         views.View.conf = self.conf
@@ -21,3 +25,24 @@ class App(common.CommonApp):
 
     def run(self):
         self.app.run(host=self.host, port=self.port)
+
+    def is_authenticated(self):
+        auth = flask.request.authorization
+        if not auth or not 'username' in auth.keys() or not 'password' in auth.keys():
+            return False
+
+        p = pam.pam()
+        return p.authenticate(auth['username'], auth['password'])
+
+    # Idea from: https://blaxpirit.com/blog/14/hide-flask-admin-behind-simple-http-auth.html
+    def authenticate(self):
+        if not flask.request.is_secure:
+            # 301 is better but it causes the browser to always use https
+            # which is a pain for testing
+            url = flask.request.url.replace('http://', 'https://', 1)
+            return flask.redirect(url, code=302)
+
+        if not self.is_authenticated():
+            raise werkzeug.exceptions.HTTPException('', flask.Response(
+                "Please log in.", 401,
+                {'WWW-Authenticate': 'Basic realm="Login Required"'}))
