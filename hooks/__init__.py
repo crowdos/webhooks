@@ -14,7 +14,7 @@ class App(common.CommonApp):
         if flask.request.headers.get('X-GitHub-Event'):
             return github.process(self.conf, flask.request)
         else:
-            flask.abort(500)
+            flask.abort(500, 'Unknown hook provider!')
 
     def run(self):
         self.app.run(host=self.host, port=self.port)
