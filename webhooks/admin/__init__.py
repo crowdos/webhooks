@@ -4,6 +4,7 @@
 import flask
 import flask_admin
 from webhooks import common
+import models
 import views
 import werkzeug
 import pam
