@@ -46,7 +46,7 @@ class App(common.CommonApp):
         hooks = webhooks.admin.models.Hook.query.filter_by(repo=repo.id,
                                                            branch=data['branch']).all()
         if not hooks:
-            return ['No configured hook']
+            return ['No configured hooks']
 
         output = []
         client = obs.Client(self.conf)
