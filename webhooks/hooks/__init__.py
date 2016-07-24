@@ -5,7 +5,6 @@ import sys
 import flask
 from webhooks import common, obs
 import github
-import requests
 import flask
 from webhooks.common import db
 import webhooks.admin.models
@@ -19,6 +18,14 @@ class App(common.CommonApp):
 
         if flask.request.headers.get('X-GitHub-Event'):
             data = github.process(self.conf, flask.request)
+
+        t = type(data)
+        if t is int:
+            flask.abort(data)
+        elif t is str:
+            return data
+        elif not t is dict:
+            flask.abort(500, 'Unknown parser return value!')
 
         if not self.__verify_data(data):
             flask.abort(500, 'Failed to parse payload!')

@@ -5,6 +5,7 @@ import hmac
 import hashlib
 import json
 import ipaddress
+import requests
 
 __all__ = ['process']
 
@@ -43,11 +44,11 @@ def __verify_signature(conf, request):
 
 def process(conf, request):
     if not __verify_remote_address(conf, request):
-        flask.abort(403)
+        return 403
 
     # Verify HMAC signature
     if not __verify_signature(conf, request):
-        flask.abort(403)
+        return 403
 
     # support ping:
     if request.headers.get('X-GitHub-Event') == 'ping':
@@ -56,7 +57,7 @@ def process(conf, request):
     parser = PayloadParser(request.json)
 
     if not parser.is_created():
-        return ''
+        return 'Nothing to do.'
 
     tag = parser.tag()
     if not tag:
