@@ -1,6 +1,10 @@
 {
     "app": {
-	"secret_key": "123456790"
+	"secret_key": "123456790",
+	"admin": {
+	    "force_https": true,
+	    "authentication": true
+	}
     },
     "obs": {
         "host": "",

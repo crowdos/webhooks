@@ -27,6 +27,9 @@ class App(common.CommonApp):
         self.app.run(host=self.host, port=self.port)
 
     def force_https(self):
+        if not self.conf['app']['admin']['force_https']:
+            return
+
         if not flask.request.is_secure:
             # 301 is better but it causes the browser to always use https
             # which is a pain for testing
@@ -43,6 +46,9 @@ class App(common.CommonApp):
 
     # Idea from: https://blaxpirit.com/blog/14/hide-flask-admin-behind-simple-http-auth.html
     def authenticate(self):
+        if not self.conf['app']['admin']['authentication']:
+            return
+
         if not self.is_authenticated():
             raise werkzeug.exceptions.HTTPException('', flask.Response(
                 "Please log in.", 401,
