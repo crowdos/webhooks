@@ -1,3 +1,10 @@
+webhooks (0.20160724.1) unstable; urgency=medium
+
+  * [640ce35] admin: don't fail if we try to show the details of a hook that does not have data yet
+  * [0cb4a7e] Add gbp.conf
+
+ -- Mohammed Sameer <msameer@foolab.org>  Sun, 24 Jul 2016 23:02:59 +0300
+
 webhooks (0.20160724.0) unstable; urgency=low
 
   * Initial release.
