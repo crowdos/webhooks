@@ -7,5 +7,6 @@ setup(name='webhooks tools',
       packages=['webhooks', 'webhooks.admin', 'webhooks.hooks', 'webhooks.obs'],
       scripts=['webhooks.py'],
       data_files=[('/etc/webhooks/', ['conf.json']),
-                  ('/usr/share/webhooks', ['admin.wsgi', 'hooks.wsgi'])]
+                  ('/usr/share/webhooks', ['admin.wsgi', 'hooks.wsgi']),
+                  ('/usr/share/doc/webhooks', ['db.sql'])],
       )
