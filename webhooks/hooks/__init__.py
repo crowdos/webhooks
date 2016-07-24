@@ -66,7 +66,7 @@ class App(common.CommonApp):
                                       name=hook.package_r.name)
                 if not package.ensure():
                     output.append('Cannot create %s of %s' % (package.name, package.project))
-                elif not package.update_service(url=hook.repo_r.url, branch=branch, revision=tag):
+                elif not package.update_service(url=hook.repo_r.url, branch=data['branch'], revision=data['tag']):
                     output.append('Cannot trigger %s of %s' % (package.name, package.project))
                 else:
                     output.append('Triggered %s of %s' % (package.name, package.project))
