@@ -15,6 +15,7 @@ Depends: ${misc:Depends},
 	 python-ipaddress,
 	 python-requests,
 	 python-flask-sqlalchemy,
-	 python-flask-admin
+	 python-flask-admin,
+	 python-pampy
 Description: webhooks application
  This package provides the webhooks application.
