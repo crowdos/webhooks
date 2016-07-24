@@ -38,6 +38,8 @@ class Hook(db.Model):
     repo = db.Column(mysql.INTEGER(10, unsigned=True),
                         db.ForeignKey('repo.id', onupdate='CASCADE', ondelete='RESTRICT'),
                         nullable=False)
+    enabled = db.Column(db.Boolean, default=False)
+
     project_r = db.relationship('Project', foreign_keys=project, lazy='select', uselist=False)
     package_r = db.relationship('Package', foreign_keys=package, lazy='select', uselist=False)
     repo_r = db.relationship('Repo', foreign_keys=repo, lazy='select', uselist=False)

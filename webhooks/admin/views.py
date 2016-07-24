@@ -17,15 +17,16 @@ class View(flask_admin.contrib.sqla.ModelView):
     page_size = 50
 
 class HookView(View):
-    column_list = ['id', 'project_r', 'package_r', 'repo_r', 'branch']
+    column_list = ['id', 'project_r', 'package_r', 'repo_r', 'branch', 'enabled']
     can_view_details = True
     details_modal = True
-    column_details_list = ['project_r', 'package_r', 'repo_r', 'branch', 'timestamp', 'tag', 'sha1']
+    column_details_list = ['project_r', 'package_r', 'repo_r', 'branch',
+                           'timestamp', 'tag', 'sha1', 'enabled']
     column_formatters = dict(timestamp=lambda v, c, m, p: time.ctime(m.data.timestamp),
                              sha1=lambda v, c, m, p: m.data.sha1,
                              tag=lambda v, c, m, p: m.data.tag)
-    column_filters = ['branch', 'project_r', 'package_r', 'repo_r']
-    form_columns = ['project_r', 'package_r', 'repo_r', 'branch']
+    column_filters = ['branch', 'project_r', 'package_r', 'repo_r', 'enabled']
+    form_columns = ['project_r', 'package_r', 'repo_r', 'branch', 'enabled']
 
 class HookDataView(View):
     column_default_sort = ('timestamp', True)
